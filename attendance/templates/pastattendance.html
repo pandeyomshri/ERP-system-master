@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load static %}
+
+	<head>
+		<title>Attendance</title>
+		<!-- Favicon icon -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+		<link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+		<link rel="stylesheet" href={% static 'css/style.css' %}>
+		<link rel="stylesheet" href={% static "css/skin-3.css" %}>
+		<link rel="stylesheet" href={% static 'css/button.css' %}>
+		<link rel="stylesheet" href={% static "css/style2.css" %}>
+		<style>
+			input {
+				width: 60px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+			{%include "navbar.html"%}
+			<div class="content-body">
+				<!-- row -->
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
+							<div class="card">
+								<h3 class="card-title"><b>Previous Attendance</b></h3>
+								<br>
+								<div class="card-body" align="center">
+
+									<label>Branch:</label>
+									<select class="ajax" id="branch" list="branch" placeholder="Branch" name="branch">
+										<option value="None">----------</option>
+										{%for branch in branches%}
+										<option value="{{branch}}">{{branch}}</option>
+										{%endfor%}
+									</select>
+									&emsp;
+									<label for="session">Session:</label>
+									<input class="ajax" type="number" id="session" name="session" min="2019" max="2100"
+										step="1" placeholder="YYYY">
+
+									<label for="semester">Semester:</label>
+									<input class="ajax" type="number" id="semester" name="semester" min="1" max="8"
+										step="1" placeholder="---" style="width: 35px;">
+									<br>
+									<label>Student ID:</label>
+									<input class="ajax" type="text" id="studentid" name="studentid"
+										placeholder="Admission Id" style="width: 100px;">
+									&emsp;
+									<label>From:</label>
+									<input class="ajax" type="date" id="date_from" style="width: 110px;"
+										name="date_from" onfocus="this.max=new Date().toISOString().split('T')[0]" />
+									&emsp;
+									<label>To:</label>
+									<input class="ajax" type="date" id="date_to" style="width: 110px;" name="date_to"
+										onfocus="this.max=new Date().toISOString().split('T')[0]" />
+
+									<hr>
+									<div class="table-responsive recentOrderTable">
+										<table class="table verticle-middle table-responsive-md">
+											<thead>
+												<tr>
+													<th scope="col">Date</th>
+													<th scope="col">Lecture No.</th>
+													<th scope="col">ID</th>
+													<th scope="col">Name</th>
+													<th scope="col">Subject</th>
+													<th scope="col">Present</th>
+												</tr>
+											</thead>
+											<tbody id="attendancelist">
+												{% for attendance in attendancelist%}
+												<tr>
+													<td>{{attendance.date}}</td>
+													<td>{{attendance.lecture_number}}</td>
+													<td>{{attendance.student.studentid}}</td>
+													<td>{{attendance.student.name|capfirst}}</td>
+													<td>{{attendance.subject.subject_name}}</td>
+													<td>{%if attendance.present %}Present{%else%}Absent{%endif%}</td>
+												</tr>
+												{%endfor%}
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--**********************************
+	Content body end
+	***********************************-->
+
+
+
+
+		</div>
+		<script>
+			$(document).ready(function () {
+				// alert("ajax")
+				$(".ajax").change(function () {
+
+					var branch = document.getElementById("branch").value;
+					var session = document.getElementById("session").value;
+					var semester = document.getElementById("semester").value;
+					var studentid = document.getElementById("studentid").value;
+					var date_from = document.getElementById("date_from").value;
+					var date_to = document.getElementById("date_to").value;
+					$.ajax({                                          // initialize an AJAX request
+						url: "pastattendance",                                    // set the url of the request (= ajax/load-department-details/ )
+						data: {
+							'branch': branch,
+							'session': session,
+							'semester': semester,
+							'studentid': studentid,
+							'date_from': date_from,
+							'date_to': date_to,
+						},        // add the course  to the GET parameters
+						success: function (data) {
+							// $("#attendancelist").html(data); 
+							var modifiedData = data.replace(/True/g, "Present").replace(/False/g, "Absent");
+							$("#attendancelist").html(modifiedData);
+						}
+					});
+
+				});
+
+			});
+		</script>
+		<!--**********************************
+	Main wrapper end
+	***********************************-->
+
+		<!--**********************************
+	Scripts
+	***********************************-->
+		<!-- Required vendors -->
+		<script src={% static "vendor/global/global.min.js" %}></script>
+		<!-- <script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js"%}></script> -->
+		<script src={% static "js/custom.min.js" %}></script>
+		<script src={% static "js/dlabnav-init.js" %}></script>
+
+		<!-- Chart sparkline plugin files -->
+		<script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+		<script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+
+		<!-- Chart Morris plugin files -->
+		<script src={% static "vendor/raphael/raphael.min.js" %}></script>
+		<script src={% static "vendor/morris/morris.min.js" %}></script>
+
+		<!-- Init file -->
+		<script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+		<!-- Demo scripts -->
+		<script src={% static "js/dashboard/dashboard.js" %}></script>
+
+		<!-- Summernote -->
+		<script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+		<!-- Summernote init -->
+		<script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+		<!-- Svganimation scripts -->
+		<script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+		<script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+		<!--script src={% static "js/styleSwitcher.js"></script-->
+		<!--
+	to import settings change name of settings.js to sytleSwitcher.js
+	-->
+	</body>
+
+</html>

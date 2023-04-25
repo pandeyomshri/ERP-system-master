@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load static %}
+
+	<head>
+		<title>Upload Marks</title>
+		<!-- Favicon icon -->
+		<link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+		<link rel="stylesheet" href={% static 'css/style.css' %}>
+		<link rel="stylesheet" href={% static "css/skin-3.css" %}>
+
+		<style>
+			.nested-table {
+				display: none;
+				border: 1px solid rgb(227, 224, 224);
+				line-height: 2px;
+				padding: 0%;
+				margin: 0%;
+			}
+
+			th {
+				text-align: center;
+				vertical-align: middle;
+			}
+
+			input {
+				/* padding: 12px; */
+				min-width: 35px;
+				width: 100%;
+				height: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+			{%include "navbar.html" %}
+			<div class="content-body">
+				<!-- row -->
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">{{curr_branch}}</h4>
+								</div>
+								<form method="post" action="/teacher/mark-marks">
+									{%csrf_token%}
+									<div class="card-body">
+										<div class="table-responsive recentOrderTable">
+											<table class="table verticle-middle table-responsive-md">
+												<thead>
+													<tr>
+														<th scope="col">No.</th>
+														<th scope="col">Id</th>
+														<th scope="col">Name</th>
+														<th scope="col">Marks</th>
+													</tr>
+												</thead>
+												<tbody>
+													{%for studentob in student_list%}
+													<tr class="toggle-row">
+														<th>{{forloop.counter}}</th>
+														<th>{{studentob.student.studentid}}</th>
+														<th>{{studentob.student.student_name|capfirst}}</th>
+														<th>
+															<table class="nested-table" border="1">
+																<tr>
+																	<th>Ques</th>
+																	<th>a</th>
+																	<th>b</th>
+																	<th>c</th>
+																	<th>d</th>
+																	<th>e</th>
+																	<th>f</th>
+																	<th>g</th>
+																	<th>h</th>
+																	<th>i</th>
+																	<th>j</th>
+																	<th>Total</th>
+																</tr>
+																<tr>
+																	<th>1</th>
+																	
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1a" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1b" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1c" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1d" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1e" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1f" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1g" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1h" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1i" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-1j" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number" name="{{studentob.student.studentid}}-1">
+																	</td>
+																</tr>
+																<tr>
+																	<th>2</th>
+																	
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-2a" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-2b" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-2c" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-2d" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-2e" min="0"
+																			max="10">
+																		
+																	</td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td><input type="number" name="{{studentob.student.studentid}}-2"></td>
+																</tr>
+																{%for ques in '34567'%}
+																<tr>
+																	<th>{{ques}}</th>
+																	
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-{{ques}}a" min="0"
+																			max="10">
+																	</td>
+																	<td>
+																		<input type="number"
+																			name="{{studentob.student.studentid}}-{{ques}}b" min="0"
+																			max="10">
+																	</td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td><input type="number" name="{{studentob.student.studentid}}-{{ques}}"></td>
+																</tr>
+																{%endfor%}
+															</table>
+														</th>
+													</tr>
+													{%endfor%}
+												</tbody>
+
+											</table>
+										</div>
+										<input type="hidden" name="branch" value="{{curr_branch}}" />
+										<input type="hidden" name="subject" value="{{curr_subject}}" />
+										<input type="hidden" name="exam-type" value="{{exam_type}}"/>
+										<button type="submit" class="btn btn-primary profile-button">Submit</button>
+
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--**********************************
+	Content body end
+	***********************************-->
+
+
+
+
+		</div>
+		<!--**********************************
+	Main wrapper end
+	***********************************-->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				$('.toggle-row').click(function () {
+					$('.nested-table').hide();
+					$(this).find('.nested-table').toggle();
+				});
+			});
+
+		</script>
+		<!--**********************************
+	Scripts
+	***********************************-->
+		<!-- Required vendors -->
+		<script src={% static "vendor/global/global.min.js" %}></script>
+		<!-- <script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js"%}></script> -->
+		<script src={% static "js/custom.min.js" %}></script>
+		<script src={% static "js/dlabnav-init.js" %}></script>
+
+		<!-- Chart sparkline plugin files -->
+		<script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+		<script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+
+		<!-- Chart Morris plugin files -->
+		<script src={% static "vendor/raphael/raphael.min.js" %}></script>
+		<script src={% static "vendor/morris/morris.min.js" %}></script>
+
+		<!-- Init file -->
+		<script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+		<!-- Demo scripts -->
+		<script src={% static "js/dashboard/dashboard.js" %}></script>
+
+		<!-- Summernote -->
+		<script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+		<!-- Summernote init -->
+		<script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+		<!-- Svganimation scripts -->
+		<script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+		<script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+		<!--script src={% static "js/styleSwitcher.js"></script-->
+		<!--
+	to import settings change name of settings.js to sytleSwitcher.js
+	-->
+	</body>
+
+</html>

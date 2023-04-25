@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load static %}
+
+	<head>
+
+
+		<title>Timetable</title>
+		<!-- Favicon icon -->
+		<link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+		<link rel="stylesheet" href={% static 'css/style.css' %}>
+		<link rel="stylesheet" href={% static "css/skin-3.css" %}>
+
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+			{%include "studentnavbar.html"%}
+			<div class="content-body">
+				<!-- row -->
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h2 class="card-title"><b>{{user.branch}}</b></h2>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive recentOrderTable">
+										<table border="7" cellspacing="0" align="center" style="min-width:90%;">
+											<tr>
+												<td width=auto align="center" height=auto><br>
+													<b>Day/Period</b></br>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>1<br>8:50-9:40</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>2<br>9:40-10:30</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>10:30-10:40</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>3<br>10:40-11:30</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>4<br>11:30-12:20</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>5<br>12:20-1:10</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>01:10-02:00</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>6<br>2:00-2:50</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>7<br>2:50-3:40</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													<b>8<br>3:40-4:30</b>
+												</td>
+											</tr>
+											<tr>
+												<td width=auto align="center" height=auto>
+													<b>Monday</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec1}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec2}}
+												</td>
+												<td rowspan="6" align="center" height=auto width="60">
+													<h5>B<br>R<br>E<br>A<br>K</h5>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec3}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec4}}
+
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec5}}
+												</td>
+												<td rowspan="6" align="center" height=auto >
+													<h5>L<br>U<br>N<br>C<br>H</h5>
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec6}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec7}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.mon_lec8}}
+												</td>
+
+											</tr>
+											<tr>
+												<td width=auto align="center" height=auto>
+													<b>Tuesday</b>
+												</td>
+
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec1}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec2}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec3}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec4}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec5}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec6}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec7}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.tues_lec8}}
+												</td>
+											</tr>
+											<tr>
+												<td width=auto align="center" height=auto>
+													<b>Wednesday</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec1}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec2}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec3}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec4}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec5}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec6}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec7}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.wed_lec8}}
+												</td>
+
+											</tr>
+											<tr>
+												<td width=auto align="center" height=auto>
+													<b>Thursday</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec1}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec2}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec3}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec4}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec5}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec6}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec7}}
+												</td>
+
+												<td width=auto align="center" height=auto>
+													{{user.branch.thurs_lec8}}
+												</td>
+											</tr>
+											<tr>
+												<td width=auto align="center" height=auto>
+													<b>Friday</b>
+												</td>
+
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec1}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec2}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec3}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec4}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec5}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec6}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec7}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.fri_lec8}}
+												</td>
+											</tr>
+											<tr>
+												<td width=auto align="center" height=auto>
+													<b>Saturday</b>
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec1}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec2}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec3}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec4}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec5}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec6}}
+												</td>
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec7}}
+												</td>
+
+												<td width=auto align="center" height=auto>
+													{{user.branch.sat_lec8}}
+												</td>
+											</tr>
+										</table>
+										<br>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--**********************************
+	Content body end
+	***********************************-->
+
+
+
+
+		</div>
+		<!--**********************************
+	Main wrapper end
+	***********************************-->
+
+		<!--**********************************
+	Scripts
+	***********************************-->
+		<!-- Required vendors -->
+		<script src={% static "vendor/global/global.min.js" %}></script>
+		<script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js" %}></script>
+		<script src={% static "js/custom.min.js" %}></script>
+		<script src={% static "js/dlabnav-init.js" %}></script>
+
+		<!-- Chart sparkline plugin files -->
+		<script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+		<script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+
+		<!-- Chart Morris plugin files -->
+		<script src={% static "vendor/raphael/raphael.min.js" %}></script>
+		<script src={% static "vendor/morris/morris.min.js" %}></script>
+
+		<!-- Init file -->
+		<script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+		<!-- Demo scripts -->
+		<script src={% static "js/dashboard/dashboard.js" %}></script>
+
+		<!-- Summernote -->
+		<script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+		<!-- Summernote init -->
+		<script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+		<!-- Svganimation scripts -->
+		<script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+		<script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+		<!--script src={% static "js/styleSwitcher.js"></script-->
+		<!--
+	to import settings change name of settings.js to sytleSwitcher.js
+	-->
+	</body>
+
+</html>

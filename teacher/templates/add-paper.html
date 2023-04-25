@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <title>Question Paper </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+    <link rel="stylesheet" href={% static 'css/style.css' %}>
+    <link rel="stylesheet" href={% static "css/skin-3.css" %}>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href={% static "css/button.css" %}>
+    <style>
+        td {
+  border: 3px solid black;
+}
+
+    </style>
+</head>
+
+<body>
+    <div id="main-wrapper">
+        {%include "navbar.html" %}
+        <div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">New Question Paper</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="/teacher/add-paper" method="POST">
+                                    {%csrf_token%}
+                                    <div align="center">
+                                        <label>Subject:</label>
+                                        <select name="subject" id="subject" required>
+                                            <option value="" disabled selected>-----</option>
+                                            {%for subject in subjects%}
+                                            <option value="{{subject}}">{{subject}}</option>
+                                            {%endfor%}
+                                        </select>
+                                        <label>Semester:</label>
+                                        <input type="number" min="1" max="8" required name="semester">
+                                        <label>Session:</label>
+                                        <input type="number" min="2019" max="2050" name="session" required>
+
+                                    </div>
+
+                                    <div class="table-responsive recentOrderTable">
+
+                                        <table class="table verticle-middle table-responsive-md" id="question">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">No.</th>
+                                                    <th>Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="questionBody">
+                                                <tr>
+                                                    <th>1.</th>
+                                                    <th>
+                                                        <table id="table1" style="display:none; column-rule-style:5px solid rebeccapurple">
+                                                            <thead style="text-align: center;">
+                                                                <th class="part">Part</th>
+                                                                <th class="co">CO</th>
+                                                                <th class="ques">Question</th>
+                                                                <th class="marks"><input type="number"
+                                                                        placeholder="Marks" name="marksques1"></th>
+                                                            </thead>
+                                                            <!-- your existing rows and cells here -->
+                                                        </table>
+                                                        <button type="button" id="add-button1" class="buttondesign"
+                                                            onclick="addPart(1)">
+                                                            Add Part
+                                                        </button>
+                                                    </th>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <button type="button" id="add-ques" class="buttondesign" onclick="addQues()">
+                                            Add Ques
+                                        </button>
+
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="buttondesign" style="float:right">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--**********************************
+Content body end
+***********************************-->
+    </div>
+    <!--**********************************
+Main wrapper end
+***********************************-->
+
+    <!--**********************************
+Scripts
+***********************************-->
+    <!-- Required vendors -->
+    <script>
+        var objective_data;
+        $(document).ready(function () {
+            $("#subject").change(function () {
+                var subject = $(this).val();
+                // alert(subject);
+                $.ajax({                                          // initialize an AJAX request
+                    url: "/teacher/ajax/load-CO",                                    // set the url of the request (= ajax/load-department-details/ )
+                    data: {
+                        'subject': subject,
+
+                    },        // add the course  to the GET parameters
+                    success: function (data) {
+                        // alert(data); 
+                        objective_data=data;
+                        $(".co-option").html(data);
+                    }
+                });
+            });
+
+        });
+        let clickCount = {
+            ques: 1,
+            1: 0
+        }
+
+        var labels = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]; // array of labels
+
+        function addPart(ques) {
+            if (clickCount[ques] < 10) { // only add a new row if clicks are less than 10
+                var table = document.getElementById("table" + ques);
+                table.style.display = "block";
+                let rowHtml = `<tr>
+                                <td>${labels[clickCount[ques]]}.</td>
+                                <td>
+                                    <select class='co-option' name="${ques + labels[clickCount[ques]]}_co">`
+                                +objective_data+`</select>
+                                </td>
+                                <td><input type="text" class="ques" name="${ques + labels[clickCount[ques]]}" required></td>
+                                <td><input type="number" max="10" min="0" name="${ques + labels[clickCount[ques]]}_marks" required></td>
+                            </tr>`
+                table.innerHTML += rowHtml;
+                clickCount[ques]++;
+            }
+            if (clickCount[ques] == 10) {
+                // disable the button after 10 clicks
+                var button = document.getElementById("add-button" + ques);
+                button.style.display = "none";
+            }
+        }
+
+        function addQues() {
+            if (clickCount.ques<15){
+            var table = document.querySelector("#questionBody");
+            // alert(table);
+            clickCount.ques += 1;
+            clickCount[clickCount.ques] = 0;
+            // alert(1);
+
+            let rowHtml = `<tr>
+                        <th>${clickCount.ques}.</th>
+                        <th>
+                            <table id="table${clickCount.ques}" style="display:none">
+                                <thead style="text-align: center;">
+                                    <th class="part">Part</th>
+                                    <th class="co">CO</th>
+                                    <th class="ques">Question</th>
+                                    <th class="marks"><input  type="number"
+                                        placeholder="Marks" name="marksques${clickCount.ques}"></th>
+                                </thead>
+                                <!-- your existing rows and cells here -->
+                            </table>
+                            <button type="button" id="add-button${clickCount.ques}" class="buttondesign"
+                                onclick="addPart(${clickCount.ques})">
+                                Add Part
+                            </button>
+                        </th>
+                    </tr>`
+            // alert(2);
+            table.innerHTML += rowHtml;
+            // alert(3);
+        }
+        if (clickCount.ques==15){
+            var button = document.getElementById("add-ques");
+            button.style.display = "none";
+        }
+    }
+    </script>
+
+    <script src={% static "vendor/global/global.min.js" %}></script>
+    <!-- <script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js" %}></script> -->
+    <script src={% static "js/custom.min.js" %}></script>
+    <script src={% static "js/dlabnav-init.js" %}></script>
+
+    <!-- Chart sparkline plugin files -->
+    <script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+    <script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+
+    <!-- Chart Morris plugin files -->
+    <script src={% static "vendor/raphael/raphael.min.js" %}></script>
+    <script src={% static "vendor/morris/morris.min.js" %}></script>
+
+    <!-- Init file -->
+    <script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+    <!-- Demo scripts -->
+    <script src={% static "js/dashboard/dashboard.js" %}></script>
+
+    <!-- Summernote -->
+    <script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+    <!-- Summernote init -->
+    <script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+    <!-- Svganimation scripts -->
+    <script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+    <script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+    <!--script src={% static "js/styleSwitcher.js"></script-->
+    <!--
+to import settings change name of settings.js to sytleSwitcher.js
+-->
+</body>
+
+</html>

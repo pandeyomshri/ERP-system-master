@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+	<head>
+		<title>Marks</title>
+		<!-- Favicon icon -->
+		<link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+		<link rel="stylesheet" href={% static 'css/style.css' %}>
+		<link rel="stylesheet" href={% static "css/skin-3.css" %}>
+		<link rel="stylesheet" href={% static 'css/button.css' %}>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<!-- <script src="{% static 'js/markattendance.js' %}"></script> -->
+		<link rel="stylesheet" href={% static "css/style2.css" %}>
+		<style type="text/css">
+			select{
+				margin-bottom: 20px;
+			}
+			#id_batch{
+				margin-bottom: 20px;
+				width: 70px;
+				height:23px;
+			}
+			.gray_button {
+			border: none;
+			padding: 6px 10px;
+			text-align: center;
+			display: inline-block;
+			font-size: 15px;
+			cursor: pointer;
+			background-color: #e7e7e7; 
+			color: black;
+			float:right;
+			border-radius: 20px;
+			margin: 0 2px;
+			}
+			label{
+				float:center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+			{%include "navbar.html" %}
+			<div class="content-body">
+				<!-- row -->
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
+							<div class="card" >
+								<div class="card-title">
+									<b>{% block title %}Marks{% endblock %}</b>
+									<a href="/teacher/mark-records"><button class="gray_button">Previous</button></a>
+									<a href="/teacher/add-paper"><button class="gray_button">Add Paper+</button></a>
+
+								</div><hr>
+								<div class="card-body">
+								{% block content %}
+								<form action="/teacher/marks-studentlist" id="marks_form" method="POST">
+									{% csrf_token %}
+									{{form.as_ul}}
+									<label>Exam-type:</label>
+									<select name="exam-type" required !important>
+										<option value="">--------</option>
+										<option value="ST1">ST-1</option>
+										<option value="ST2">ST-2</option>
+										<option value="reST">re-ST</option>
+										<option value="PUE">PUE</option>
+										<option value="rePUE">re-PUE</option>
+									</select>
+									<br>
+									<button type="submit" class="buttondesign">Mark</button>
+								</form>
+								</div>
+								
+								{% endblock %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--**********************************
+	Content body end
+	***********************************-->
+
+
+
+
+		</div>
+		<!--**********************************
+	Main wrapper end
+	***********************************-->
+		<script>
+			$(document).ready(function(){
+			$("#id_batch").change(function () {
+				var batch = $(this).val();
+				var course=document.getElementById("id_course").value;
+				$.ajax({                                          // initialize an AJAX request
+					url: "/teacher/attendance/branch",                                    // set the url of the request (= ajax/load-department-details/ )
+					data: { 'course': course,
+							'batch':batch
+				 		  },        // add the course  to the GET parameters
+					success: function (data) {  
+						$("#id_branch").html(data); 
+					}
+				});
+			});
+
+			$("#id_section").change(function () {
+				const section = $(this).val();
+				const branch=document.getElementById("id_branch").value;
+				const batch=document.getElementById("id_batch").value;
+				$.ajax({
+					url: "/teacher/attendance/subject",
+					data: {'branch': branch,
+							'section':section,
+							'batch':batch
+					},
+					success: function (data) {
+						$("#id_subject").html(data);
+					}
+				});
+			});
+		});
+		</script>
+		<!--**********************************
+	Scripts
+	***********************************-->
+		<!-- Required vendors -->
+		<script src={% static "vendor/global/global.min.js"%}></script>
+		<!-- <script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js"%}></script> -->
+		<script src={% static "js/custom.min.js"%}></script>
+		<script src={% static "js/dlabnav-init.js"%}></script>
+
+		<!-- Chart sparkline plugin files -->
+		<script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js"%}></script>
+		<script src={% static "js/plugins-init/sparkline-init.js"%}></script>
+
+		<!-- Chart Morris plugin files -->
+		<script src={% static "vendor/raphael/raphael.min.js"%}></script>
+		<script src={% static "vendor/morris/morris.min.js"%}></script>
+
+		<!-- Init file -->
+		<script src={% static "js/plugins-init/widgets-script-init.js"%}></script>
+
+		<!-- Demo scripts -->
+		<script src={% static "js/dashboard/dashboard.js"%}></script>
+
+		<!-- Summernote -->
+		<script src={% static "vendor/summernote/js/summernote.min.js"%}></script>
+		<!-- Summernote init -->
+		<script src={% static "js/plugins-init/summernote-init.js"%}></script>
+
+		<!-- Svganimation scripts -->
+		<script src={% static "vendor/svganimation/vivus.min.js"%}></script>
+		<script src={% static "vendor/svganimation/svg.animation.js"%}></script>
+		<!--script src={% static "js/styleSwitcher.js"></script-->
+		<!--
+	to import settings change name of settings.js to sytleSwitcher.js
+	-->
+	</body>
+
+</html>

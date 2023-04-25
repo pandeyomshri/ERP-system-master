@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+
+    <head>
+        <title>About</title>
+        <!-- Favicon icon -->
+        <link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+        <link rel="stylesheet" href={% static 'css/style.css' %}>
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <style>
+        .profile-pic {
+            border-radius: 50%;
+            height: 150px;
+            width: 150px;
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            vertical-align: middle;
+            text-align: center;
+            color: transparent;
+            transition: all .3s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .profile-pic:hover {
+            background-color: rgba(0,0,0,.5);
+            z-index: 10000;
+            color: #fff;
+            transition: all .3s ease;
+            text-decoration: none;
+        }
+        
+        .profile-pic span {
+            display: inline-block;
+            padding-top: 4.5em;
+            padding-bottom: 4.5em;
+        }
+        
+        form input[type="file"] {
+                  display: none;
+                  cursor: pointer;
+         }
+         </style>
+    </head>
+
+    <body>
+        <div id="main-wrapper">
+            {%include "studentnavbar.html"%}
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-3 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                            <form action="upload.php" method="post" enctype="multipart/form-data">
+                                <label for="fileToUpload">
+                              <div class="profile-pic" style="background-image: url('https://randomuser.me/api/portraits/med/men/65.jpg')">
+                                  <span><i class="fa fa-edit" ></i></span>
+                              </div>
+                              </label>
+                              <input type="File" name="fileToUpload" id="fileToUpload">
+                            </form>
+                            {{user.student_name}} 
+                            {{user.personalEmail}}
+                        </div>
+                    </div>
+                    <div class="col-md-5 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h3 class="text-right">Profile :</h3>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label class="labels">Mobile No :</label>
+                                    {{user.mobile}}
+                                </div></br>
+                                <div class="col-md-12">
+                                    <label class="labels">Personal Email ID :</label>
+                                    {{user.personalEmail}}
+                                </div></br>
+                                <div class="col-md-12">
+                                    <label class="labels">College Email ID :</label>
+                                    {{user.email}}
+                                </div></br>
+                                <div class="col-md-12">
+                                    <label class="labels">Blood_Group :</label>
+                                    {{user.bloodGroup}}
+                                </div></br>
+                                <div class="col-md-12">
+                                    <label class="labels">Gender :</label>
+                                    {{user.gender}}
+                                </div></br>
+                                <div class="col-md-12">
+                                    <label class="labels">Address :</label>
+                                    {{user.permanentAddress}}
+                                </div></br>
+                            </div>
+                            
+                            <div class="mt-5 text-center">
+                                <button class="btn btn-primary profile-button" type="button">Save Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center experience">
+                                <span>Edit Experience</span>
+                                <span class="border px-3 p-1 add-experience"><i
+                                        class="fa fa-plus"></i>&nbsp;Experience</span>
+                            </div><br>
+                            <div class="col-md-12">
+                                <label class="labels">Additional Details</label>
+                                <input type="text" class="form-control" placeholder="additional details" value="">
+                            </div> <br>
+                            <div class="col-md-12">
+                                <label class="labels">Additional Details</label>
+                                <input type="text" class="form-control" placeholder="additional details" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--**********************************
+Content body end
+***********************************-->
+
+
+
+
+
+        <!--**********************************
+Main wrapper end
+***********************************-->
+
+        <!--**********************************
+Scripts
+***********************************-->
+        <!-- --------------- for profile image change-------------------- -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            // Get the input element where the user selects the new image
+            const input = document.getElementById("input-image");
+
+            input.addEventListener("change", function () {
+                // Get the selected image file
+                const imageFile = input.files[0];
+
+                // Create a new FormData object to store the image file
+                const formData = new FormData();
+                formData.append("image", imageFile);
+
+                // Use jQuery AJAX to send the image file to the server
+                $.ajax({
+                    type: "POST",
+                    url: "/update-image/",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(response);
+                        // handle the response from the server
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        // handle any errors that occur
+                    }
+                });
+            });
+
+        </script>
+        <!-- Required vendors -->
+        <script src={% static "vendor/global/global.min.js" %}></script>
+        <script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js" %}></script>
+        <script src={% static "js/custom.min.js" %}></script>
+        <script src={% static "js/dlabnav-init.js" %}></script>
+
+        <!-- Chart sparkline plugin files -->
+        <script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+        <script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+
+        <!-- Chart Morris plugin files -->
+        <script src={% static "vendor/raphael/raphael.min.js" %}></script>
+        <script src={% static "vendor/morris/morris.min.js" %}></script>
+
+        <!-- Init file -->
+        <script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+        <!-- Demo scripts -->
+        <script src={% static "js/dashboard/dashboard.js" %}></script>
+
+        <!-- Summernote -->
+        <script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+        <!-- Summernote init -->
+        <script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+        <!-- Svganimation scripts -->
+        <script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+        <script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+        <!--script src={% static "js/styleSwitcher.js"></script-->
+        <!--
+to import settings change name of settings.js to sytleSwitcher.js
+-->
+    </body>
+
+</html>

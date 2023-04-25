@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load static %}
+
+	<head>
+		<title>Dashboard </title>
+		<!-- Favicon icon -->
+		<link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+		<link rel="stylesheet" href={% static 'css/style.css' %}>
+		<link rel="stylesheet" href={% static "css/skin-3.css" %}>
+		<link rel="stylesheet" href={% static "css/button.css" %}>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+			{%include "navbar.html" %}
+			<div class="content-body">
+				<!-- row -->
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">Assignment</h4>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive recentOrderTable">
+										<table class="table verticle-middle table-responsive-md">
+											<thead>
+												<tr>
+													<th scope="col">No.</th>
+													<th scope="col">Name</th>
+													<th scope="col">Subject</th>
+													<th scope="col">Date Of Submission</th>
+													<th scope="col">Status</th>
+												</tr>
+											</thead>
+
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						{%if lectures%}
+						<div class="col-lg-6 col-md-6 col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">Today's Lectures</h4>
+								</div>
+								<div class="card-body">
+									<ul class="list-unstyled">
+									{% for lecture in lectures%}
+										<li>{{lecture}}<span style="font-size: 28px;">{{emoji}}</span></li>
+										<hr>
+									{%endfor%}
+								</div></ul>
+							</div>
+						</div>
+						{%endif%}
+					</div>
+					{%if subject_list %}
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Lecture Counts</h4>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									{%for subject in subject_list%}
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<div class="card" style=" box-shadow: 0px 0px 20px rgb(153, 153, 153);">
+											<div class="card-header">
+												<h4 class="card-title">{{subject.branch}}-{{subject.branch_subject.subject_name}}</h4>
+											</div>
+											<div class="card-body">
+												<canvas id="{{subject.branch_subject.subject_name}}" height="400px" width="800"></canvas>
+											</div>
+										</div>
+									</div>
+									{%endfor%}
+								</div>
+							</div>
+						</div>
+					</div>
+					{%endif%}
+
+				</div>
+			</div>
+			<!--**********************************
+	Content body end
+	***********************************-->
+		</div>
+		<!--**********************************
+	Main wrapper end
+	***********************************-->
+
+		<!--**********************************
+	Scripts
+	***********************************-->
+	<script>
+		{%for subject in subject_list%}
+		var ctx = document.getElementById("{{subject.branch_subject.subject_name}}").getContext("2d");
+		// alert(ctx)
+		var data = {
+		  labels: ["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5"],
+		  datasets: [
+			{
+			  label: "Lectures Taken",
+			  backgroundColor: "rgba(0, 128, 0, 0.2)",
+      borderColor: "rgba(0, 128, 0, 1)",
+			  borderWidth: 1,
+			  data: [{{subject.NOLT1}},{{subject.NOLT2}},{{subject.NOLT3}},{{subject.NOLT4}},{{subject.NOLT5}}],
+			  barPercentage: 0.5,
+			  categoryPercentage: 0.5
+			},
+			{
+			  label: "Lectures Required",
+			  backgroundColor: "rgba(255, 0, 0, 0.2)",
+      borderColor: "rgba(255, 0, 0, 1)",
+			  borderWidth: 1,
+			  data: [{{subject.NOLR1}},{{subject.NOLR2}},{{subject.NOLR3}},{{subject.NOLR4}},{{subject.NOLR5}}],
+			  barPercentage: 0.5,
+			  categoryPercentage: 0.5
+			}
+		  ]
+		};		
+
+		var options = {
+		  scales: {
+			yAxes: [{
+			  
+			  ticks: {
+				beginAtZero: true,
+				stepSize: 2,
+				max: 12
+			  }
+			}]
+		  },
+
+		};
+		
+		var histogram = new Chart(ctx, {
+		  type: "bar",
+		  data: data,
+		  options: options
+		});
+		
+		{%endfor%}
+	  </script>
+		<!-- Required vendors -->
+		<script src={% static "vendor/global/global.min.js" %}></script>
+		<script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js" %}></script>
+		<script src={% static "js/custom.min.js" %}></script>
+		<script src={% static "js/dlabnav-init.js" %}></script>
+
+		<!-- Chart sparkline plugin files -->
+		<script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+		<script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+		
+
+		<!-- Chart Morris plugin files -->
+		<script src={% static "vendor/raphael/raphael.min.js" %}></script>
+		<script src={% static "vendor/morris/morris.min.js" %}></script>
+
+		<!-- Init file -->
+		<script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+		<!-- Demo scripts -->
+		<script src={% static "js/dashboard/dashboard.js" %}></script>
+
+		<!-- Summernote -->
+		<script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+		<!-- Summernote init -->
+		<script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+		<!-- Svganimation scripts -->
+		<script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+		<script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+		<!--script src={% static "js/styleSwitcher.js"></script-->
+		<!--
+	to import settings change name of settings.js to sytleSwitcher.js
+	-->
+	</body>
+
+</html>

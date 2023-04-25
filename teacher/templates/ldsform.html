@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+
+    <head>
+        <title>LDS</title>
+        <!-- Favicon icon -->
+        <link rel="icon" type="image/png" sizes="16x16" href={% static "images/favicon.png" %}>
+        <link rel="stylesheet" href={% static 'css/style.css' %}>
+        <link rel="stylesheet" href={% static "css/skin-3.css" %}>
+        <link rel="stylesheet" href={% static "css/button.css" %}>
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+
+        <style>
+            .date {
+                width: 10%;
+
+            }
+
+            .topics {
+                width: 35%;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="main-wrapper">
+            {%include "navbar.html" %}
+            <div class="content-body">
+                <!-- row -->
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Lecture Delivery Schedule for {{subject}}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/teacher/lds-form" method="POST">
+                                        {%csrf_token%}
+                                        <input type="hidden" value="{{subject}}" name="{{subject}}">
+                                        <input type="hidden" value="{{branch}}" name="{{branch}}">
+                                        <div class="card-body">
+                                            <div class="table-responsive recentOrderTable">
+                                                <table class="table verticle-middle table-responsive-md" id="lds">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" style="width:9%">S No.</th>
+                                                            <th scope="col" class="date">Date Planned</th>
+                                                            <th scope="col" class="date">Date Executed</th>
+                                                            <th class="units">Unit</th>
+                                                            <th class="topics" scope="col">Topic Plan</th>
+                                                            <th class="topics" scope="col">Topics Executed</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for i in n%}
+                                                        
+                                                        <tr>
+                                                            <td>{{i}}</td>
+                                                            {% if i in executionData %}
+                                                                
+                                                                <td>{{executionData|get_item:i|get_item:"datePlan"}}</td>
+                                                                <td>{{executionData|get_item:i|get_item:"dateExec"}}</td>
+                                                                <td>{{executionData|get_item:i|get_item:"unit"}}</td>
+                                                                <td>{{executionData|get_item:i|get_item:"topics_planned"|join:", "}}</td>
+                                                                <td>{{executionData|get_item:i|get_item:"topics_delivered"|join:", "}}</td>
+                                                            {%else%}
+                                                                <td><input type="date" name="dateplan{{i}}"></td>
+                                                                <td>In Process</td>
+                                                                <td>
+                                                                    <select id="unit{{i}}" name="unit{{i}}"
+                                                                        onchange="showtopics({{i}})">
+                                                                        <option value="{{None}}" selected disabled>-----
+                                                                        </option>
+                                                                        <option value="1">Unit 1</option>
+                                                                        <option value="2">Unit 2</option>
+                                                                        <option value="3">Unit 3</option>
+                                                                        <option value="4">Unit 4</option>
+                                                                        <option value="5">Unit 5</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select id="topics{{i}}" name="topics{{i}}"
+                                                                        placeholder="Topic" multiple
+                                                                        style="width: 100%;">
+
+                                                                    </select>
+
+                                                                </td>
+                                                            {%endif%}
+                                                        </tr>
+                                                        {%endfor%}
+                                                    </tbody>
+                                                </table>
+                                                <!-- <div align="right" style="margin: 1%;">
+                                                    <button type="button" class="buttondesign" id="button" align="right" onclick="addLectures()">
+                                                        Add New
+                                                    </button>
+                                                </div> -->
+                                                <input type="hidden" name="subject" value="{{subject}}">
+                                                <div align="center" style="margin: 1%;">
+                                                    <button type="submit" class="buttondesign">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--**********************************
+	Content body end
+	***********************************-->
+            </div>
+        </div>
+        <!--**********************************
+	Main wrapper end
+	***********************************-->
+
+        <!--**********************************
+	Scripts
+	***********************************-->
+        <script>
+            function showtopics(i) {
+                var date=document.getElementsByName("dateplan"+i)[0];
+                date.required=true;
+                var select = document.getElementById("unit" + i);
+                var selectedOption = select.options[select.selectedIndex].value;
+                $.ajax({
+                    url: "topics",
+                    data: {
+                        'unit': selectedOption,
+                        'subject': "{{subject}}",
+                    },
+                    success: function (data) {
+                        $("#topics" + i).html(data);
+                    }
+
+                });
+
+            }
+        </script>
+
+
+        <!-- Required vendors -->
+        <script src={% static "vendor/global/global.min.js" %}></script>
+        <!-- <script src={% static "vendor/bootstrap-select/dist/js/bootstrap-select.min.js" %}></script> -->
+        <script src={% static "js/custom.min.js" %}></script>
+        <script src={% static "js/dlabnav-init.js" %}></script>
+
+        <!-- Chart sparkline plugin files -->
+        <script src={% static "vendor/jquery-sparkline/jquery.sparkline.min.js" %}></script>
+        <script src={% static "js/plugins-init/sparkline-init.js" %}></script>
+
+
+        <!-- Chart Morris plugin files -->
+        <script src={% static "vendor/raphael/raphael.min.js" %}></script>
+        <script src={% static "vendor/morris/morris.min.js" %}></script>
+
+        <!-- Init file -->
+        <script src={% static "js/plugins-init/widgets-script-init.js" %}></script>
+
+        <!-- Demo scripts -->
+        <script src={% static "js/dashboard/dashboard.js" %}></script>
+
+        <!-- Summernote -->
+        <script src={% static "vendor/summernote/js/summernote.min.js" %}></script>
+        <!-- Summernote init -->
+        <script src={% static "js/plugins-init/summernote-init.js" %}></script>
+
+        <!-- Svganimation scripts -->
+        <script src={% static "vendor/svganimation/vivus.min.js" %}></script>
+        <script src={% static "vendor/svganimation/svg.animation.js" %}></script>
+        <!--script src={% static "js/styleSwitcher.js"></script-->
+        <!--
+	to import settings change name of settings.js to sytleSwitcher.js
+	-->
+    </body>
+
+</html> 
